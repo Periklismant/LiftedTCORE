@@ -1,0 +1,24 @@
+(define (domain liftedtcore_sokoban_problem-domain)
+ (:types
+    location direction thing - object
+    person stone - thing
+ )
+ (:constants
+   player1 - person
+   pos6_2 pos2_8 pos2_2 pos4_2 pos3_8 - location
+   stone1 - stone
+ )
+ (:predicates (movedir ?l_from - location ?l_to - location ?d - direction) (isnongoal ?l - location) (isgoal ?l - location) (clear ?l - location) (at_ ?t - thing ?l - location) (atgoal ?t - thing) (hold_0) (hold_1) (hold_2) (hold_3))
+ (:action move
+  :parameters ( ?p - person ?l_from - location ?l_to - location ?d - direction)
+  :precondition (and (at_ ?p ?l_from) (clear ?l_to) (movedir ?l_from ?l_to ?d))
+  :effect (and (not (at_ ?p ?l_from)) (not (clear ?l_to)) (at_ ?p ?l_to) (clear ?l_from) (when (or (and (= ?p player1) (= ?l_to pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_from pos4_2))))) (hold_0)) (when (and (or (and (= ?p player1) (= ?l_to pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_from pos4_2))))) (not (or (and (= ?p player1) (= ?l_to pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_from pos3_8)))) (not (or (= ?l_from pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))))) (not (hold_1))) (when (or (and (= ?p player1) (= ?l_to pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_from pos3_8)))) (not (or (= ?l_from pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))) (hold_1)) (when (or (and (= ?p player1) (= ?l_to pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_from pos2_2))))) (hold_2)) (when (and (or (and (= ?p player1) (= ?l_to pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_from pos2_2))))) (not (at_ stone1 pos6_2))) (not (hold_3)))))
+ (:action pushtogoal
+  :parameters ( ?p - person ?s - stone ?l_p - location ?l_from - location ?l_to - location ?d - direction)
+  :precondition (and (at_ ?p ?l_p) (at_ ?s ?l_from) (clear ?l_to) (movedir ?l_p ?l_from ?d) (movedir ?l_from ?l_to ?d) (isgoal ?l_to))
+  :effect (and (not (at_ ?p ?l_p)) (not (at_ ?s ?l_from)) (not (clear ?l_to)) (at_ ?p ?l_from) (at_ ?s ?l_to) (clear ?l_p) (atgoal ?s) (when (or (and (= ?p player1) (= ?l_from pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_p pos4_2))))) (hold_0)) (when (and (or (and (= ?p player1) (= ?l_from pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_p pos4_2))))) (not (or (and (= ?p player1) (= ?l_from pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_p pos3_8)))) (not (or (= ?l_p pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))))) (not (hold_1))) (when (or (and (= ?p player1) (= ?l_from pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_p pos3_8)))) (not (or (= ?l_p pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))) (hold_1)) (when (or (and (= ?p player1) (= ?l_from pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_p pos2_2))))) (hold_2)) (when (and (or (and (= ?p player1) (= ?l_from pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_p pos2_2))))) (not (or (and (= ?s stone1) (= ?l_to pos6_2)) (and (at_ stone1 pos6_2) (not (and (= ?s stone1) (= ?l_from pos6_2))))))) (not (hold_3))) (when (or (and (= ?s stone1) (= ?l_to pos6_2)) (and (at_ stone1 pos6_2) (not (and (= ?s stone1) (= ?l_from pos6_2))))) (hold_3))))
+ (:action pushtonongoal
+  :parameters ( ?p - person ?s - stone ?l_p - location ?l_from - location ?l_to - location ?d - direction)
+  :precondition (and (at_ ?p ?l_p) (at_ ?s ?l_from) (clear ?l_to) (movedir ?l_p ?l_from ?d) (movedir ?l_from ?l_to ?d) (isnongoal ?l_to))
+  :effect (and (not (at_ ?p ?l_p)) (not (at_ ?s ?l_from)) (not (clear ?l_to)) (at_ ?p ?l_from) (at_ ?s ?l_to) (clear ?l_p) (not (atgoal ?s)) (when (or (and (= ?p player1) (= ?l_from pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_p pos4_2))))) (hold_0)) (when (and (or (and (= ?p player1) (= ?l_from pos4_2)) (and (at_ player1 pos4_2) (not (and (= ?p player1) (= ?l_p pos4_2))))) (not (or (and (= ?p player1) (= ?l_from pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_p pos3_8)))) (not (or (= ?l_p pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))))) (not (hold_1))) (when (or (and (= ?p player1) (= ?l_from pos3_8)) (and (at_ player1 pos3_8) (not (and (= ?p player1) (= ?l_p pos3_8)))) (not (or (= ?l_p pos2_8) (and (clear pos2_8) (not (= ?l_to pos2_8)))))) (hold_1)) (when (or (and (= ?p player1) (= ?l_from pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_p pos2_2))))) (hold_2)) (when (and (or (and (= ?p player1) (= ?l_from pos2_2)) (and (at_ player1 pos2_2) (not (and (= ?p player1) (= ?l_p pos2_2))))) (not (or (and (= ?s stone1) (= ?l_to pos6_2)) (and (at_ stone1 pos6_2) (not (and (= ?s stone1) (= ?l_from pos6_2))))))) (not (hold_3))) (when (or (and (= ?s stone1) (= ?l_to pos6_2)) (and (at_ stone1 pos6_2) (not (and (= ?s stone1) (= ?l_from pos6_2))))) (hold_3))))
+)
